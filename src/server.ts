@@ -1,6 +1,7 @@
 import colors from "colors";
 import express, { Express } from "express";
-import router from "./router/locatarioRoutes";
+import routerLocatario from "./router/locatarioRoutes";
+import routerLocador from "./router/locadorRoutes";
 import db from "./config/db";
 import cors from 'cors'
 import { corsConfig } from "./config/cors";
@@ -23,6 +24,7 @@ server.use(cors(corsConfig));
 server.use(express.json());
 
 //Usa un ruteo general como /api
-server.use("/api", router);
+server.use("/api", routerLocatario);
+server.use("/api", routerLocador);
 
 export default server;
