@@ -3,7 +3,7 @@ import IContrato from "./ContratoTypes";
 interface IInmueble {
   id?: number;  // ID del inmueble
   calle: string;
-  altura: string;
+  altura?: string;
   localidad: string;
   piso?: string;  // Opcional
   departamento?: string;  // Opcional

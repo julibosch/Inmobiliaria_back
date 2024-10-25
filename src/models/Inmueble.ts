@@ -9,8 +9,8 @@ import Contrato from "./Contrato";
 class Inmueble extends Model {
   // Calle
   @Column({
-      type: DataType.STRING(30),
-      allowNull: false,
+    type: DataType.STRING(30),
+    allowNull: false,
   })
   calle!: string
 
