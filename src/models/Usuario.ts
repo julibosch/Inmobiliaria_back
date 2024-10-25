@@ -10,14 +10,14 @@ class Usuario extends Model {
     type: DataType.STRING(50),
     allowNull: false,
   })
-  nombre: string
+  nombre!: string
 
   // Apellido
   @Column({
     type: DataType.STRING(50),
     allowNull: false
   })
-  password: string
+  password!: string
 }
 
 export default Usuario;

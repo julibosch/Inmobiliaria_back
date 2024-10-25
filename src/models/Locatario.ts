@@ -31,12 +31,6 @@ class Locatario extends Model {
     type: DataType.STRING(20)
   })
   telefono: string
-
-  // Email
-  @Column({
-    type: DataType.STRING(50)
-  })
-  email: string
 }
 
 export default Locatario;
