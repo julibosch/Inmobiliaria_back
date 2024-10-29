@@ -33,12 +33,6 @@ class Locador extends Model {
   })
   telefono: string
 
-  // Email
-  @Column({
-    type: DataType.STRING(50)
-  })
-  email: string
-
   // Relacion con Inmueble
   @HasMany(() => Inmueble)
   inmuebles: Inmueble[]

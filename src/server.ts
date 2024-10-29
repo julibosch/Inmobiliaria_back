@@ -11,7 +11,7 @@ import { corsConfig } from "./config/cors";
 const conectarDB = async () => {
   try {
     await db.authenticate();
-    db.sync(); // agregar {alter: true} si quiero modificar la tabla desde el modelo
+    db.sync({alter: true}); // agregar {alter: true} si quiero modificar la tabla desde el modelo
     console.log(colors.bgGreen.white("Conexion exitosa a la base de datos"));
   } catch (error) {
     console.log(colors.bgRed.white(`error al conectar db ${error}`));
@@ -29,6 +29,6 @@ server.use(express.json());
 server.use("/api", routerLocatario);
 server.use("/api", routerLocador);
 server.use("/api", routerInmueble);
-server.use("/api/auth", routerAuth);
+server.use("/api", routerAuth);
 
 export default server;
