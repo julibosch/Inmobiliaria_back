@@ -1,62 +1,78 @@
 import { Request, Response } from "express";
+import IInmueble from "../types/InmuebleTypes";
+import Inmueble from "../models/Inmueble";
 
 const listadoInmuebles = async (req: Request, res: Response) => {
   try {
-    // const inmuebles: ILocatario[] = await Inmueble.findAll();
-    // return res.json(inmuebles);
-    console.log("Listado de inmuebles");
+    console.log("[INFO] Listado de inmuebles");
+    const inmuebles: IInmueble[] = await Inmueble.findAll();
+    return res.json(inmuebles);
   } catch (error) {
-    return res.status(500).json(error);
+    console.log(`[ERROR] Error obteniendo listado de inmuebles: ${error}`)
+    return res.status(500).json({ message: `Error interno del servidor: ${error}` });
   }
 }
 
 const obtenerInmueble = async (req: Request, res: Response) => {
-  // const { id } = req.params;
+  const { id } = req.params;
   try {
-    // const inmueble: Inmueble = await Inmueble.findByPk(id);
-    // if (!inmueble)
-    //   return res.status(404).json({ message: "Inmueble no encontrado" });
-    // return res.json(inmueble);
-    console.log("Obtener inmueble");
+    console.log(`[INFO] Obtener inmueble: ${id}`);
+    const inmueble: Inmueble = await Inmueble.findByPk(id);
+    if (!inmueble) {
+      return res.status(404).json({ message: "Inmueble no encontrado" });
+    }
+    return res.json(inmueble);
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.log(`[ERROR] Error obteniendo inmueble por ID ${id}: ${error}`)
+    return res.status(500).json({ message: `Error interno del servidor: ${error}` });
   }
 }
 
 const crearInmueble = async (req: Request, res: Response) => {
   try {
-    // const inmueble: Inmueble = await Inmueble.create(req.body);
-    // return res.json({ message: "Inmueble creado exitosamente", inmueble });
-    console.log("Crear inmueble");
+    console.log("[INFO] Crear inmueble");
+    const inmueble: Inmueble = await Inmueble.create(req.body);
+    return res.json({ message: "Inmueble creado exitosamente", inmueble });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.log(`[ERROR] Error creando un nuevo inmueble: ${error}`)
+    return res.status(500).json({ message: `Error interno del servidor: ${error}` });
   }
 }
 
 const editarInmueble = async (req: Request, res: Response) => {
-  // const { id } = req.params;
+  const { id } = req.params;
+  const inmuebleActualizado = req.body;
+
   try {
-    // const inmueble: Inmueble | null = await Inmueble.findByPk(id);
-    // if (!inmueble)
-    //   return res.status(404).json({ message: "Inmueble no encontrado" });
-    // return res.json(inmueble);
-    console.log("Editar inmueble");
+    console.log(`[INFO] Editar inmueble: ${id}`);
+    const inmueble: Inmueble = await Inmueble.findByPk(id);
+    if (!inmueble) {
+      return res.status(404).json({ message: "Inmueble no encontrado" });
+    }
+
+    await inmueble.update(inmuebleActualizado)
+
+    return res.json(inmueble);
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.error(`[ERROR] Error al editar inmueble ${id}: ${error}`);
+    return res.status(500).json({ message: `Error interno del servidor: ${error}` });
   }
 }
 
 const eliminarInmueble = async (req: Request, res: Response) => {
-  // const { id } = req.params;
+  const { id } = req.params;
   try {
-    // const inmueble: Inmueble | null = await Inmueble.findByPk(id);
-    // if (!inmueble)
-    //   return res.status(404).json({ message: "Inmueble no encontrado" });
-    // await inmueble.destroy();
-    // return res.json({ message: "Inmueble eliminado" });
-    console.log("Eliminar inmueble");
+    console.log(`[INFO] Eliminar inmueble: ${id}`);
+    const inmueble: Inmueble = await Inmueble.findByPk(id);
+    if (!inmueble) {
+      return res.status(404).json({ message: "Inmueble no encontrado" });
+    }
+
+    await inmueble.destroy();
+    return res.json({ message: `Inmueble eliminado exitosamente!` });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.error(`[ERROR] Error al eliminar inmueble ${id}: ${error}`);
+    return res.status(500).json({ message: `Error interno del servidor: ${error}` });
   }
 }
 
