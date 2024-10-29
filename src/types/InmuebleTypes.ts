@@ -1,4 +1,6 @@
+import Locador from "../models/Locador";
 import IContrato from "./ContratoTypes";
+import { ILocatario } from "./LocatarioTypes";
 
 interface IInmueble {
   id?: number;  // ID del inmueble
@@ -7,13 +9,13 @@ interface IInmueble {
   localidad: string;
   piso?: string;  // Opcional
   departamento?: string;  // Opcional
-  locadorId: number;  // Relación con Locador
-  locador?: {
-    nombre: string;
-    apellido: string;
-    dni: string;
-  };  // Puedes incluir solo los campos que necesites del locador
+  locadorId?: number;  // Relación con Locador
   contratos?: IContrato[];  // Relación con contratos, si se incluye
 }
 
-export default IInmueble;
+//Este se usa para cuando hacemos el get(join) con locador, saca el campo id y agrega el objeto Locador
+interface InmuebleJoin extends Omit<IInmueble, 'locadorId'> {
+  locador: ILocatario;
+}
+
+export {IInmueble, InmuebleJoin};
