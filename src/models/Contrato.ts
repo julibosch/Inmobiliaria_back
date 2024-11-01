@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AllowNull } from "sequelize-typescript";
 import Locatario from "./Locatario";
 import Inmueble from "./Inmueble";
+import { Estado } from "../types/ContratoTypes";
 
 @Table({
   tableName: 'contrato'
@@ -21,22 +22,22 @@ class Contrato extends Model {
   id_inmueble!: number;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
     allowNull: false,
   })
   fecha_inicio!: Date;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.DATEONLY,
     allowNull: false,
   })
   fecha_fin!: Date;
 
   @Column({
-    type: DataType.STRING(15),
+    type: DataType.ENUM('vigente', 'finalizado', 'proximo a vencer', 'rescindido'),
     allowNull: false,
   })
-  estado!: string;  // Ejemplos: "vigente", "finalizado", "proximo a vencer", "rescindido"
+  estado!: Estado; // Enum de ts creado en archivo types contrato
 
   @Column({
     type: DataType.INTEGER,
@@ -49,7 +50,7 @@ class Contrato extends Model {
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
   })
-  monto!: number;
+  importe!: number;
 
   @BelongsTo(() => Locatario)
   locatario!: Locatario;

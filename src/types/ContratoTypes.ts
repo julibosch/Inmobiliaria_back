@@ -1,20 +1,37 @@
-import IInmueble from "./InmuebleTypes";
+import { IInmueble } from "./InmuebleTypes";
 
-interface IContrato {
-  id?: number;  // ID del contrato
-  id_locatario: number;  // Relación con Locatario
-  id_inmueble: number;  // Relación con Inmueble
+interface IContratoBase {
+  id?: number;
+  id_locatario: number;
+  id_inmueble: number;
   fecha_inicio: Date;
   fecha_fin: Date;
-  estado: string;  // Ejemplos: "vigente", "finalizado", etc.
-  alerta_vencimiento: number;  // Días antes para la alerta de vencimiento
-  monto: number;  // Monto del alquiler
+  estado: Estado;
+  alerta_vencimiento: number;
+  importe: number;
+}
+
+enum Estado {
+  VIGENTE = "vigente",
+  FINALIZADO = "finalizado",
+  RESCINDIDO = "rescindido",
+  PROXIMO_A_VENCER = "proximo_a_vencer",
+}
+
+interface IContratoJoin {
+  id?: number;
+  fecha_inicio: Date;
+  fecha_fin: Date;
+  estado: Estado;
+  alerta_vencimiento: number;
+  importe: number;
   locatario?: {
+    id?: number;
     nombre: string;
     apellido: string;
     dni: string;
-  };  // Opcional, solo si necesitas datos del locatario
-  inmueble?: IInmueble;  // Relación con inmueble, opcional
+  };
+  inmueble?: IInmueble;
 }
 
-export default IContrato;
+export { IContratoBase, IContratoJoin, Estado };
