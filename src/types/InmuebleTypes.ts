@@ -14,8 +14,8 @@ interface IInmueble {
 }
 
 //Este se usa para cuando hacemos el get(join) con locador, saca el campo id y agrega el objeto Locador
-interface InmuebleJoin extends Omit<IInmueble, 'locadorId'> {
+interface InmuebleJoin {
   locador: ILocatario;
 }
 
-export {IInmueble, InmuebleJoin};
+export { IInmueble, InmuebleJoin };
