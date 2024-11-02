@@ -68,4 +68,16 @@ const editarContrato = async (req: Request, res: Response) => {
   }
 };
 
-export { crearContrato, listadoContratos, editarContrato };
+const eliminarContrato = async (req: Request, res: Response) => {
+  try {
+    const contrato = await Contrato.findByPk(req.params.id);
+    if (!contrato) return res.status(404).json({message: "Contrato no encontrado"});
+
+    await contrato.destroy();
+    return res.json({message: "Contrato eliminado exitosamente."});
+  } catch (error) {
+    return res.status(500).json({message: error});
+  }
+}
+
+export { crearContrato, listadoContratos, editarContrato, eliminarContrato };
