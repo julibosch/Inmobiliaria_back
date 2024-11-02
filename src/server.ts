@@ -5,6 +5,7 @@ import routerLocador from "./router/locadorRoutes";
 import routerInmueble from "./router/inmuebleRoutes";
 import routerAuth from "./router/authRoutes";
 import routerContrato from "./router/contratoRoutes";
+import routerTipoContrato from "./router/tipoContratoRoutes"
 import db from "./config/db";
 import cors from 'cors'
 import { corsConfig } from "./config/cors";
@@ -32,5 +33,6 @@ server.use("/api", routerLocador);
 server.use("/api", routerInmueble);
 server.use("/api", routerAuth);
 server.use("/api", routerContrato);
+server.use("/api", routerTipoContrato);
 
 export default server;
