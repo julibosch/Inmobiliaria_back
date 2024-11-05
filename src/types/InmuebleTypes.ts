@@ -1,4 +1,3 @@
-import Locador from "../models/Locador";
 import IContrato from "./ContratoTypes";
 import { ILocatario } from "./LocatarioTypes";
 
@@ -6,6 +5,7 @@ interface IInmueble {
   id?: number;  // ID del inmueble
   calle: string;
   altura?: string;
+  torre?: string;  // Opcional
   localidad: string;
   piso?: string;  // Opcional
   departamento?: string;  // Opcional

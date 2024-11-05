@@ -9,7 +9,9 @@ const listadoInmuebles = async (req: Request, res: Response) => {
     const inmuebles: InmuebleJoin[] = await Inmueble.findAll({
       include: [{ model: Locador }]
     });
-    console.log(inmuebles)
+    if (!inmuebles) {
+      return res.status(404).json({ message: "No se encontraron inmuebles" });
+    }
     return res.json(inmuebles);
   } catch (error) {
     console.log(`[ERROR] Error obteniendo listado de inmuebles: ${error}`)
