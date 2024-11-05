@@ -2,7 +2,7 @@ import { Router } from "express";
 import { handleInputsErrors } from "../middleware/locatarioMid";
 import { authMiddleware } from "../middleware/auth";
 import { reglaParamTipoContrato, reglasValidacionTipoContrato } from "../libs/tipoContratoValidation";
-import { crearTipoContrato, listadoTipoContrato } from "../controller/tipoContratoController";
+import { crearTipoContrato, editarTipoContrato, eliminarTipoContrato, listadoTipoContrato } from "../controller/tipoContratoController";
 
 const router = Router();
 
@@ -25,13 +25,13 @@ router.put(
   authMiddleware as any,
   reglasValidacionTipoContrato,
   handleInputsErrors as any,
-  
+  editarTipoContrato as any
 );
 router.delete(
   "/tipoContrato/:id",
   authMiddleware as any,
   reglaParamTipoContrato,
-  
+  eliminarTipoContrato as any
 );
 
 export default router;
