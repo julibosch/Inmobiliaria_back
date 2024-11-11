@@ -9,7 +9,9 @@ const listadoInmuebles = async (req: Request, res: Response) => {
     const inmuebles: InmuebleJoin[] = await Inmueble.findAll({
       include: [{ model: Locador }]
     });
-    console.log(inmuebles)
+    if (!inmuebles) {
+      return res.status(404).json({ message: "No se encontraron inmuebles" });
+    }
     return res.json(inmuebles);
   } catch (error) {
     console.log(`[ERROR] Error obteniendo listado de inmuebles: ${error}`)
@@ -35,7 +37,8 @@ const obtenerInmueble = async (req: Request, res: Response) => {
 const crearInmueble = async (req: Request, res: Response) => {
   try {
     console.log("[INFO] Crear inmueble");
-    const inmueble: Inmueble = await Inmueble.create(req.body);
+    const nuevoInmueble: IInmueble = req.body;
+    const inmueble: Inmueble = await Inmueble.create(nuevoInmueble as any);
     return res.json({ message: "Inmueble creado exitosamente", inmueble });
   } catch (error) {
     console.log(`[ERROR] Error creando un nuevo inmueble: ${error}`)
@@ -45,7 +48,7 @@ const crearInmueble = async (req: Request, res: Response) => {
 
 const editarInmueble = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const inmuebleActualizado = req.body;
+  const inmuebleActualizado: IInmueble = req.body;
 
   try {
     console.log(`[INFO] Editar inmueble: ${id}`);

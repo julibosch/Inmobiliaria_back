@@ -3,7 +3,8 @@ import Locador from "./Locador";
 import Contrato from "./Contrato";
 
 @Table({
-  tableName: 'inmueble'
+  tableName: 'inmueble',
+  timestamps: true
 })
 
 class Inmueble extends Model {
@@ -27,6 +28,13 @@ class Inmueble extends Model {
     allowNull: false,
   })
   localidad!: string
+
+  // Torre
+  @Column({
+    type: DataType.STRING(10),
+    allowNull: true,  // Piso puede ser opcional en algunos inmuebles
+  })
+  torre?: string
 
   // Piso
   @Column({
