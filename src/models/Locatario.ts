@@ -1,7 +1,8 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
 
 @Table({
-  tableName: 'locatario'
+  tableName: 'locatario',
+  timestamps: true,
 })
 
 class Locatario extends Model {

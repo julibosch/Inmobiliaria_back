@@ -4,7 +4,8 @@ import Inmueble from "./Inmueble";
 import { Estado } from "../types/ContratoTypes";
 
 @Table({
-  tableName: 'contrato'
+  tableName: 'contrato',
+  timestamps: true
 })
 class Contrato extends Model {
   @ForeignKey(() => Locatario)

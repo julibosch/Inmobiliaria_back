@@ -29,6 +29,7 @@ const listadoContratos = async (req: Request, res: Response) => {
 };
 
 const crearContrato = async (req: Request, res: Response) => {
+  console.log(req.body)
   try {
     //! ver si agregar Validacion de un contrato para que no se repita, es en base a (locatario, inmueble, fecha_desde fecha_hasta).
     const contrato: IContratoBase = await Contrato.create(req.body);
