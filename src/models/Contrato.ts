@@ -35,7 +35,7 @@ class Contrato extends Model {
   fecha_fin!: Date;
 
   @Column({
-    type: DataType.ENUM('vigente', 'finalizado', 'proximo a vencer', 'rescindido'),
+    type: DataType.ENUM('vigente', 'finalizado', 'proximo_a_vencer', 'rescindido'),
     allowNull: false,
   })
   estado!: Estado; // Enum de ts creado en archivo types contrato

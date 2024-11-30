@@ -13,7 +13,7 @@ const reglasValidacionContrato = [
   body("fecha_fin")
     .isISO8601().withMessage("La fecha de fin no es válida."),
   body("estado")
-    .isIn(['vigente', 'finalizado', 'proximo a vencer', 'rescindido'])
+    .isIn(['vigente', 'finalizado', 'proximo_a_vencer', 'rescindido'])
     .withMessage("El estado debe ser uno de los valores: vigente, finalizado, proximo a vencer, rescindido."),
   body("alerta_vencimiento")
     .isInt({ min: 1 })
