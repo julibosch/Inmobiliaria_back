@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import Contrato from "./Contrato";
 
 @Table({
   tableName: 'tipo_contrato',
@@ -25,6 +26,9 @@ class TipoContrato extends Model {
     allowNull: false
   })
   alarma_aumento!: number //Establece cada cuanto es el aumento de importes, ej: 4 meses, 2 meses
+
+  @HasMany(() => Contrato)
+  contratos!: Contrato[];
 }
 
 export default TipoContrato;

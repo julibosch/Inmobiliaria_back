@@ -22,6 +22,9 @@ const reglasValidacionContrato = [
   body("importe")
     .isDecimal().withMessage("El importe debe ser un valor decimal.")
     .toFloat(), // Conversión a decimal
+    body("id_tipo_contrato")
+    .isInt().withMessage("El ID del tipo contrato debe ser un entero.")
+    .toInt(), // Conversión a entero
 ];
 
 const reglaParamContrato = param('id').isInt().withMessage("ID no válido.");

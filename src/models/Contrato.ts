@@ -2,6 +2,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AllowNull } from
 import Locatario from "./Locatario";
 import Inmueble from "./Inmueble";
 import { Estado } from "../types/ContratoTypes";
+import TipoContrato from "./TipoContrato";
 
 @Table({
   tableName: 'contrato',
@@ -53,11 +54,21 @@ class Contrato extends Model {
   })
   importe!: number;
 
+  @ForeignKey(() => TipoContrato)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  id_tipo_contrato!: number;
+
   @BelongsTo(() => Locatario)
   locatario!: Locatario;
 
   @BelongsTo(() => Inmueble)
   inmueble!: Inmueble;
+
+  @BelongsTo(() => TipoContrato)
+  tipo_contrato!: TipoContrato;
 }
 
 export default Contrato;
