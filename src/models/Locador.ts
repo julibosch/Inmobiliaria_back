@@ -2,7 +2,8 @@ import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import Inmueble from "./Inmueble";
 
 @Table({
-  tableName: 'locador'
+  tableName: 'locador',
+  timestamps: true
 })
 
 class Locador extends Model {

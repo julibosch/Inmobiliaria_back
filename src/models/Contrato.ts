@@ -2,9 +2,11 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AllowNull } from
 import Locatario from "./Locatario";
 import Inmueble from "./Inmueble";
 import { Estado } from "../types/ContratoTypes";
+import TipoContrato from "./TipoContrato";
 
 @Table({
-  tableName: 'contrato'
+  tableName: 'contrato',
+  timestamps: true
 })
 class Contrato extends Model {
   @ForeignKey(() => Locatario)
@@ -34,7 +36,7 @@ class Contrato extends Model {
   fecha_fin!: Date;
 
   @Column({
-    type: DataType.ENUM('vigente', 'finalizado', 'proximo a vencer', 'rescindido'),
+    type: DataType.ENUM('vigente', 'finalizado', 'proximo_a_vencer', 'rescindido'),
     allowNull: false,
   })
   estado!: Estado; // Enum de ts creado en archivo types contrato
@@ -52,11 +54,21 @@ class Contrato extends Model {
   })
   importe!: number;
 
+  @ForeignKey(() => TipoContrato)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  id_tipo_contrato!: number;
+
   @BelongsTo(() => Locatario)
   locatario!: Locatario;
 
   @BelongsTo(() => Inmueble)
   inmueble!: Inmueble;
+
+  @BelongsTo(() => TipoContrato)
+  tipo_contrato!: TipoContrato;
 }
 
 export default Contrato;
