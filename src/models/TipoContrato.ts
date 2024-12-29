@@ -12,7 +12,7 @@ class TipoContrato extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  duracion!: number //La duracion puede ser 1 año, dos, etc
+  duracion!: number //La duracion es en meses
 
   // Apellido
   @Column({
@@ -25,7 +25,7 @@ class TipoContrato extends Model {
     type: DataType.INTEGER,
     allowNull: false
   })
-  alarma_aumento!: number //Establece cada cuanto es el aumento de importes, ej: 4 meses, 2 meses
+  alarma_aumento!: number
 
   @HasMany(() => Contrato)
   contratos!: Contrato[];

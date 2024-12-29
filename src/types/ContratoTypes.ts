@@ -32,6 +32,12 @@ interface IContratoJoin {
     dni: string;
   };
   inmueble?: IInmueble;
+  tipo_contrato?: {
+    id?: number;
+    duracion: number;
+    plazo_aumento: number;
+    alarma_aumento: number;
+  }
 }
 
 export { IContratoBase, IContratoJoin, Estado };

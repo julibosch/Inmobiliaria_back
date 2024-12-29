@@ -5,6 +5,7 @@ import Inmueble from "../models/Inmueble";
 import Locatario from "../models/Locatario";
 import TipoContrato from "../models/TipoContrato";
 import { Op, Sequelize } from "sequelize";
+import { crearHistorialContratos } from "./historialContratoController";
 
 const listadoContratos = async (req: Request, res: Response) => {
   const { finalizados } = req.query;
@@ -61,7 +62,7 @@ const crearContrato = async (req: Request, res: Response) => {
     const contrato: IContratoBase = await Contrato.create(req.body);
 
     // Obtenemos el contrato con las relaciones (join) al igual que en `editarContrato`.
-    const contratoJoin: IContratoJoin = await Contrato.findByPk(contrato.id, {
+    const contratoJoin = await Contrato.findByPk(contrato.id, {
       attributes: [
         "id",
         "fecha_inicio",
@@ -76,12 +77,17 @@ const crearContrato = async (req: Request, res: Response) => {
         { model: TipoContrato },
       ],
     });
+    const contratoPlano = contratoJoin.get({ plain: true });
+
+    const historial_contrato = crearHistorialContratos(res, contratoPlano);
 
     return res.json({
       message: "Contrato creado exitosamente",
       contrato: contratoJoin,
+      historial_contrato: historial_contrato,
     });
   } catch (error) {
+    console.error("[ERROR] Error al crear el contrato: ", error);
     return res.status(500).json({ message: error });
   }
 };
