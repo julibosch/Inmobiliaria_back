@@ -4,7 +4,7 @@ import { IContratoBase, IContratoJoin } from "../types/ContratoTypes";
 import Inmueble from "../models/Inmueble";
 import Locatario from "../models/Locatario";
 import TipoContrato from "../models/TipoContrato";
-import { Op, Sequelize } from "sequelize";
+import { Op } from "sequelize";
 import { crearHistorialContratos } from "./historialContratoController";
 
 const listadoContratos = async (req: Request, res: Response) => {
@@ -158,9 +158,24 @@ const eliminarContrato = async (req: Request, res: Response) => {
   }
 };
 
+const actualizarEstadoContrato = async (req: Request, res: Response) => {
+  try {
+    const contrato = await Contrato.findByPk(req.params.id);
+    if (!contrato) {
+      return res.status(404).json({ message: "Contrato no encontrado." });
+    }
+
+    await contrato.update({ estado: req.body.estado });
+    return res.json({ message: "Estado del contrato actualizado exitosamente." });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+}
+
 export {
   crearContrato,
   listadoContratos,
   editarContrato,
   eliminarContrato,
+  actualizarEstadoContrato
 };

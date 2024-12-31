@@ -83,8 +83,6 @@ const actualizarCrearHistorialContratos = async (req: Request, res: Response) =>
 const crearHistorialContratos = async (res: Response, contratoJoin: IContratoJoin) => {
   const { id, fecha_inicio, fecha_fin, importe } = contratoJoin;
 
-  console.log("[contrato join]:", contratoJoin);
-
   const fechaInicioDate = new Date(fecha_inicio); // Fecha de inicio del contrato
   const fechaFinDate = new Date(fecha_fin); // Fecha de finalización del contrato
   const hoy = new Date(); // Fecha actual
@@ -92,23 +90,19 @@ const crearHistorialContratos = async (res: Response, contratoJoin: IContratoJoi
   // Obtener el plazo de aumento (en meses)
   const plazoAumentoMeses = contratoJoin.tipo_contrato.plazo_aumento;
 
-  let proximaFechaAumento = fechaInicioDate;
+  let proximaFechaAumento = new Date(Date.UTC(fechaInicioDate.getUTCFullYear(), fechaInicioDate.getUTCMonth(), 1));
 
   // Iterar hasta encontrar el próximo aumento válido
   while (proximaFechaAumento <= hoy) {
     proximaFechaAumento = addMonths(proximaFechaAumento, plazoAumentoMeses);
+
+    // Si la fecha cae en el último día del mes, ajustarla al primer día del mes siguiente
+    if (proximaFechaAumento.getUTCDate() !== 1) {
+      proximaFechaAumento = new Date(Date.UTC(proximaFechaAumento.getUTCFullYear(), proximaFechaAumento.getUTCMonth() + 1, 1));
+    }
+
     console.log(proximaFechaAumento)
-
-    // TODO: Descomentar y quemarle el primer dia del mes.
-    // Si el día original es mayor al último día del mes resultante, ajusta al último día del mes
-    // const diaOriginal = getDate(fechaInicioDate);
-    // const ultimoDiaDelMes = getDate(lastDayOfMonth(proximaFechaAumento));
-    // if (diaOriginal > ultimoDiaDelMes) {
-    //   proximaFechaAumento = lastDayOfMonth(proximaFechaAumento);
-    // }
   }
-
-  console.log("[Próxima fecha de aumento válida]:", proximaFechaAumento);
 
   // Validar que la próxima fecha de aumento no exceda la fecha de finalización
   if (isAfter(proximaFechaAumento, fechaFinDate)) {
