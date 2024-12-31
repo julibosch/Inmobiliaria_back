@@ -9,9 +9,10 @@
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "ES2016",
+    "target": "ES2018",
     "moduleResolution": "node",
     "module": "CommonJS",
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"]
 }
