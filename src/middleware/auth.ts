@@ -12,7 +12,6 @@ declare global {
 }
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("[auth]")
   const bearer = req.headers.authorization;
   if (!bearer) {
     return res.status(404).json({message: "No autorizado"});

@@ -10,6 +10,7 @@ import {
   listadoContratos,
   editarContrato,
   eliminarContrato,
+  actualizarEstadoContrato,
 } from "../controller/contratoController";
 
 const router = Router();
@@ -38,6 +39,14 @@ router.delete(
   reglaParamContrato,
   handleInputsErrors as any,
   eliminarContrato as any
+);
+
+router.patch(
+  "/contratos/:id",
+  // authMiddleware as any,
+  reglaParamContrato,
+  handleInputsErrors as any,
+  actualizarEstadoContrato as any
 );
 
 export default router;

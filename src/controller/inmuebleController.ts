@@ -5,7 +5,6 @@ import Locador from "../models/Locador";
 
 const listadoInmuebles = async (req: Request, res: Response) => {
   try {
-    console.log("[INFO] Listado de inmuebles");
     const inmuebles: InmuebleJoin[] = await Inmueble.findAll({
       include: [{ model: Locador }]
     });
@@ -22,7 +21,6 @@ const listadoInmuebles = async (req: Request, res: Response) => {
 const obtenerInmueble = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    console.log(`[INFO] Obtener inmueble: ${id}`);
     const inmueble: InmuebleJoin = await Inmueble.findByPk(id);
     if (!inmueble) {
       return res.status(404).json({ message: "Inmueble no encontrado" });
@@ -36,7 +34,6 @@ const obtenerInmueble = async (req: Request, res: Response) => {
 
 const crearInmueble = async (req: Request, res: Response) => {
   try {
-    console.log("[INFO] Crear inmueble");
     const nuevoInmueble: IInmueble = req.body;
     const inmueble: Inmueble = await Inmueble.create(nuevoInmueble as any);
     return res.json({ message: "Inmueble creado exitosamente", inmueble });
@@ -51,7 +48,6 @@ const editarInmueble = async (req: Request, res: Response) => {
   const inmuebleActualizado: IInmueble = req.body;
 
   try {
-    console.log(`[INFO] Editar inmueble: ${id}`);
     const inmueble: Inmueble = await Inmueble.findByPk(id);
     if (!inmueble) {
       return res.status(404).json({ message: "Inmueble no encontrado" });
@@ -69,7 +65,6 @@ const editarInmueble = async (req: Request, res: Response) => {
 const eliminarInmueble = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    console.log(`[INFO] Eliminar inmueble: ${id}`);
     const inmueble: Inmueble = await Inmueble.findByPk(id);
     if (!inmueble) {
       return res.status(404).json({ message: "Inmueble no encontrado" });

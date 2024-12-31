@@ -1,8 +1,9 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AllowNull } from "sequelize-typescript";
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AllowNull, HasMany } from "sequelize-typescript";
 import Locatario from "./Locatario";
 import Inmueble from "./Inmueble";
 import { Estado } from "../types/ContratoTypes";
 import TipoContrato from "./TipoContrato";
+import HistorialContrato from "./HistorialContratos";
 
 @Table({
   tableName: 'contrato',
@@ -69,6 +70,9 @@ class Contrato extends Model {
 
   @BelongsTo(() => TipoContrato)
   tipo_contrato!: TipoContrato;
+
+  @HasMany(() => HistorialContrato)
+  historial!: HistorialContrato[];
 }
 
 export default Contrato;
