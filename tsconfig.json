@@ -9,10 +9,9 @@
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "ESNext",
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
-    "allowSyntheticDefaultImports": true
+    "target": "ES2016",
+    "moduleResolution": "node",
+    "module": "CommonJS",
   },
   "include": ["src/**/*.ts"]
 }
