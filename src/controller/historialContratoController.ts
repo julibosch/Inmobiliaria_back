@@ -51,13 +51,24 @@ const actualizarCrearHistorialContratos = async (req: Request, res: Response) =>
       await historial_a_actualizar.update({ estado: 'finalizado' });
     }
 
+    const fecha_actualizacion = new Date(historial_a_actualizar.dataValues.fecha_actualizacion);
+
     // Crear un nuevo historial
-    const nueva_fecha_actualizacion = addMonths(new Date(historial_a_actualizar.dataValues.fecha_actualizacion), Number(plazo_aumento));
+    // const nueva_fecha_actualizacion = addMonths(new Date(historial_a_actualizar.dataValues.fecha_actualizacion), Number(plazo_aumento));
+    const nueva_fecha_actualizacion = new Date(Date.UTC(fecha_actualizacion.getUTCFullYear(), fecha_actualizacion.getUTCMonth() + plazo_aumento, 1));
+
+    // Ajustar a zona horaria local (si tu base de datos usa horario local)
+    const offsetArgentina = 4 * 60; // Argentina está en UTC-3
+    const nueva_fecha_argentina = new Date(
+      nueva_fecha_actualizacion.getTime() + offsetArgentina * 60000
+    );
+
+    console.log("[PROXIMA FECHA ACTUALIZACION LOCAL] ", nueva_fecha_argentina);
 
     const nuevo_historial = await HistorialContrato.create({
       id_contrato,
       importe_actualizado,
-      fecha_actualizacion: nueva_fecha_actualizacion,
+      fecha_actualizacion: nueva_fecha_argentina,
       estado: 'vigente',
     });
 
@@ -68,9 +79,7 @@ const actualizarCrearHistorialContratos = async (req: Request, res: Response) =>
       return res.status(404).json({ message: `No se encontró el contrato: ${id_contrato}` });
     }
 
-    const contrato_actualizado = await contrato_a_actualizar.update({ importe: importe_actualizado });
-
-    console.log("[DEBUG] Contrato actualizado: ", contrato_actualizado);
+    await contrato_a_actualizar.update({ importe: importe_actualizado });
 
     return res.json(nuevo_historial);
 
@@ -94,14 +103,15 @@ const crearHistorialContratos = async (res: Response, contratoJoin: IContratoJoi
 
   // Iterar hasta encontrar el próximo aumento válido
   while (proximaFechaAumento <= hoy) {
-    proximaFechaAumento = addMonths(proximaFechaAumento, plazoAumentoMeses);
+    // proximaFechaAumento = addMonths(proximaFechaAumento, plazoAumentoMeses);
+    proximaFechaAumento = new Date(Date.UTC(proximaFechaAumento.getUTCFullYear(), proximaFechaAumento.getUTCMonth() + plazoAumentoMeses, 1));
 
     // Si la fecha cae en el último día del mes, ajustarla al primer día del mes siguiente
     if (proximaFechaAumento.getUTCDate() !== 1) {
       proximaFechaAumento = new Date(Date.UTC(proximaFechaAumento.getUTCFullYear(), proximaFechaAumento.getUTCMonth() + 1, 1));
     }
 
-    console.log(proximaFechaAumento)
+    console.log("[PROXIMA FECHA AUMENTO] ", proximaFechaAumento)
   }
 
   // Validar que la próxima fecha de aumento no exceda la fecha de finalización
