@@ -16,7 +16,7 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER , process.env.
     acquire: 30000,
     idle: 10000
   },
-  models: [__dirname + '/../models/**/*.ts'],
+  models: [__dirname + '/../models/**/*'],
   logging: false,
 });
 

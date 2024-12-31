@@ -9,10 +9,11 @@
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "ES2018",
+    "target": "ESNext",
     "moduleResolution": "node",
     "module": "CommonJS",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts"]
 }
