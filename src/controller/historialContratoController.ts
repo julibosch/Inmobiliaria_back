@@ -135,7 +135,7 @@ const crearHistorialContratos = async (res: Response, contratoJoin: IContratoJoi
 
   } catch (error) {
     console.error("[ERROR] Error al crear el historial del contrato: ", error);
-    throw new Error("Error al crear el historial del contrato.", error);
+    throw new Error("Error al crear el historial del contrato.");
   }
 };
 
