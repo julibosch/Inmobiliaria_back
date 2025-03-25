@@ -25,9 +25,12 @@ const login = async (req: Request, res: Response) => {
 
 //El usuario viene en req, que se lo pasamos desde el middleware de autenticacion
 const obtenerUsuario = async (req: Request, res: Response) => {
+  if (!req.usuario) {
+    return res.status(401).json({ message: "Usuario no autorizado" });
+  }
   return res.json({
-      id: req.usuario.id,
-      nombre: req.usuario.nombre,
+    id: req.usuario.id,
+    nombre: req.usuario.nombre,
   });
 };
 
