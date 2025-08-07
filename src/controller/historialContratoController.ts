@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import HistorialContrato from "../models/HistorialContratos";
-import { IContratoJoin } from "../types/ContratoTypes";
+import { Estado, IContratoJoin } from "../types/ContratoTypes";
 import { addMonths, getDate, isAfter, lastDayOfMonth } from "date-fns";
 import Contrato from "../models/Contrato";
 
@@ -20,7 +20,6 @@ const listadoHistorialContratos = async (req: Request, res: Response) => {
 
 const obtenerHistorial = async (req: Request, res: Response) => {
   try {
-    console.log("id: ", req.params.id)
     const historialContrato = await HistorialContrato.findAll({
       where: {
         id_contrato: req.params.id,
@@ -35,9 +34,14 @@ const obtenerHistorial = async (req: Request, res: Response) => {
 }
 
 const actualizarCrearHistorialContratos = async (req: Request, res: Response) => {
-  console.log("[ACTUALIZAR Y CREAR HIST] ", req.body);
   try {
     const { id_contrato, id_historial, importe_actualizado, plazo_aumento } = req.body;
+
+    // 1) Verificar estado del contrato
+    const contrato = await Contrato.findByPk(id_contrato);
+    if (contrato?.estado === Estado.RESCINDIDO || contrato?.estado === Estado.FINALIZADO) {
+      return res.status(400).json({ message: 'Contrato rescindido o finalizado: no se generan aumentos.' });
+    }
 
     // Obtener el historial actual
     const historial_a_actualizar = await HistorialContrato.findOne({ where: { id: id_historial } });
@@ -47,8 +51,8 @@ const actualizarCrearHistorialContratos = async (req: Request, res: Response) =>
     }
 
     // Actualizar el estado a 'finalizado'
-    if (historial_a_actualizar.dataValues.estado === 'vigente') {
-      await historial_a_actualizar.update({ estado: 'finalizado' });
+    if (historial_a_actualizar.dataValues.estado === Estado.VIGENTE) {
+      await historial_a_actualizar.update({ estado: Estado.FINALIZADO });
     }
 
     const fecha_actualizacion = new Date(historial_a_actualizar.dataValues.fecha_actualizacion);
@@ -62,8 +66,6 @@ const actualizarCrearHistorialContratos = async (req: Request, res: Response) =>
     const nueva_fecha_argentina = new Date(
       nueva_fecha_actualizacion.getTime() + offsetArgentina * 60000
     );
-
-    console.log("[PROXIMA FECHA ACTUALIZACION LOCAL] ", nueva_fecha_argentina);
 
     const nuevo_historial = await HistorialContrato.create({
       id_contrato,
