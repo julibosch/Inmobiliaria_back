@@ -7,19 +7,10 @@ import TipoContrato from "../models/TipoContrato";
 import { Op } from "sequelize";
 import { crearHistorialContratos } from "./historialContratoController";
 
-const listadoContratos = async (req: Request, res: Response) => {
-  const { finalizados } = req.query;
-  // Convertir finalizados a booleano
-  const esFinalizado = finalizados === "true"; // Interpreta "true" como verdadero, porque en el param pasa a ser string
-
-  const hoy = new Date();
-  const condicionFecha: any = esFinalizado
-    ? { fecha_fin: { [Op.lt]: hoy } } //Trae Contratos finalizados
-    : { fecha_fin: { [Op.gte]: hoy } }; //Trae Contratos no finalizados
+const listadoContratos = async (_req: Request, res: Response) => {
 
   try {
     const contratos: IContratoJoin[] = await Contrato.findAll({
-      where: condicionFecha,
       attributes: [
         "id",
         "fecha_inicio",
