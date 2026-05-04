@@ -113,7 +113,7 @@ const crearHistorialContratos = async (res: Response, contratoJoin: IContratoJoi
       proximaFechaAumento = new Date(Date.UTC(proximaFechaAumento.getUTCFullYear(), proximaFechaAumento.getUTCMonth() + 1, 1));
     }
 
-    console.log("[PROXIMA FECHA AUMENTO] ", proximaFechaAumento)
+    console.log(`[PROXIMA FECHA AUMENTO][${id}] `, proximaFechaAumento)
   }
 
   // Validar que la próxima fecha de aumento no exceda la fecha de finalización

@@ -33,8 +33,18 @@ const listadoContratos = async (_req: Request, res: Response) => {
 
 const crearContrato = async (req: Request, res: Response) => {
   try {
-    // Esto es opcional, si decides agregar la validación.
-    const { id_locatario, id_inmueble, fecha_inicio, fecha_fin } = req.body;
+    // Procesar fechas para evitar pérdida de día por zona horaria
+    const datosContrato = {
+      ...req.body,
+      fecha_inicio: typeof req.body.fecha_inicio === 'string' 
+        ? req.body.fecha_inicio.split('T')[0] 
+        : new Date(req.body.fecha_inicio).toISOString().split('T')[0],
+      fecha_fin: typeof req.body.fecha_fin === 'string' 
+        ? req.body.fecha_fin.split('T')[0] 
+        : new Date(req.body.fecha_fin).toISOString().split('T')[0],
+    };
+
+    const { id_locatario, id_inmueble, fecha_inicio, fecha_fin } = datosContrato;
     const contratoExistente = await Contrato.findOne({
       where: {
         id_locatario,
@@ -50,7 +60,7 @@ const crearContrato = async (req: Request, res: Response) => {
       });
     }
     // Si no existe un contrato con los mismos datos, procedemos a crear el contrato.
-    const contrato: IContratoBase = await Contrato.create(req.body);
+    const contrato: IContratoBase = await Contrato.create(datosContrato);
 
     // Obtenemos el contrato con las relaciones (join) al igual que en `editarContrato`.
     const contratoJoin = await Contrato.findByPk(contrato.id, {
@@ -87,13 +97,24 @@ const editarContrato = async (req: Request, res: Response) => {
   try {
     const { id_locatario, id_inmueble, fecha_inicio, fecha_fin } = req.body;
 
+    // Procesar fechas para evitar pérdida de día por zona horaria
+    const datosActualizados = {
+      ...req.body,
+      fecha_inicio: typeof req.body.fecha_inicio === 'string' 
+        ? req.body.fecha_inicio.split('T')[0] 
+        : new Date(req.body.fecha_inicio).toISOString().split('T')[0],
+      fecha_fin: typeof req.body.fecha_fin === 'string' 
+        ? req.body.fecha_fin.split('T')[0] 
+        : new Date(req.body.fecha_fin).toISOString().split('T')[0],
+    };
+
     // Verificar si ya existe un contrato con los mismos datos (excepto el que se está editando)
     const contratoExistente = await Contrato.findOne({
       where: {
         id_locatario,
         id_inmueble,
-        fecha_inicio,
-        fecha_fin,
+        fecha_inicio: datosActualizados.fecha_inicio,
+        fecha_fin: datosActualizados.fecha_fin,
         id: { [Op.ne]: req.params.id }, // Excluir el contrato actual
       },
     });
@@ -109,7 +130,7 @@ const editarContrato = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Contrato no encontrado." });
     }
 
-    await contrato.update(req.body);
+    await contrato.update(datosActualizados);
 
     const contratoJoin: IContratoJoin = await Contrato.findByPk(req.params.id, {
       attributes: [
